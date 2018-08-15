@@ -114,9 +114,9 @@ function addInventory()
         }, function(err,res){
             if(err) throw err;
             var currentQuant = parseInt(res[0].stock_quantity);
-            console.log(currentQuant);
+            // console.log(currentQuant);
             var newQuant = currentQuant + parseInt(data.amount);
-            console.log(newQuant);
+            // console.log(newQuant);
             connection.query("UPDATE products SET ? WHERE ?", 
             [{
                 stock_quantity: newQuant
@@ -126,6 +126,7 @@ function addInventory()
             }]
             ,function(err,res){
                 if(err) throw err;
+                console.log("Update Completed");
                 connection.end();
             })
         })
@@ -157,15 +158,17 @@ function newProduct(){
         message: "How many of these products are available?",
         name: "quantity"
     }]).then(function(data){
-        console.log(data.name + data.department + data.price + data.quantity);
+        // console.log(data.name + data.department + data.price + data.quantity);
         var name = data.name;
         var dept = data.department;
         var sql = "INSERT INTO products SET ?";
         var values = {product_name: name, department_name: dept, price: parseFloat(data.price), stock_quantity: parseInt(data.quantity)};
         connection.query(sql, values, function(err, res) {
             if(err) throw err;
+            console.log("New Product Inserted!");
+            listProducts(true);
         })
 
-        connection.end();
+        // connection.end();
     })
 }

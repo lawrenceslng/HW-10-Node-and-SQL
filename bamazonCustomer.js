@@ -74,6 +74,30 @@ function placeOrder(item,quantity){
         if(parseInt(res[0].stock_quantity)<quantity)
         {
             console.log("In stock quantity Insufficient! There are only " + res[0].stock_quantity + " in stock.");
+            //
+                inquirer
+                .prompt([
+                // Here we create a basic text prompt.
+                {
+                    type: "list",
+                    message: "What would you like to do?",
+                    choices: ["GO BACK TO ITEM LIST", "EXIT"],
+                    name: "action"
+                }
+                ])
+                .then(function(data) {
+                  if(data.action == "GO BACK TO ITEM LIST")
+                  {
+                    console.log("Returning to Home...");
+                    displayItems();
+                  }
+                  else
+                  {
+                    console.log("Bye!");
+                    connection.end();
+                  }
+                })
+                //
         }
         else{
             console.log("Order Processing...");
